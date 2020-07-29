@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: false }))
 // routes
 app.use('/', require('./routes/homeRouter'))
 app.use('/my-page', require('./routes/myPageRouter'))
-app.use('/rate-movies', require('./routes/usersRouter'))
+app.use('/rate-movies', require('./routes/rateRouter'))
 app.use('/users', require('./routes/usersRouter'))
 
 // run server
