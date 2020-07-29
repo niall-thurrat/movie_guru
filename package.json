@@ -1,0 +1,19 @@
+{
+  "name": "movie_guru",
+  "version": "1.0.0",
+  "description": "a movie rating app built for 2DV513 Database Theory final project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niall-thurrat/movie_guru.git"
+  },
+  "author": "Niall Thurrat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/niall-thurrat/movie_guru/issues"
+  },
+  "homepage": "https://github.com/niall-thurrat/movie_guru#readme"
+}
