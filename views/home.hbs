@@ -1,0 +1,30 @@
+<h1>
+    <span class="far fa-list-alt"></span> Top 10 movies by average rating
+</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Average Rating</th>
+            <th class="text-left">Ratings Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if locals.movies.length }}
+        {{#each locals.movies}}
+        <tr>
+            <td class="w-10">{{this.title}}</td>
+            <td class="w-20">{{this.avgRating}}</td>
+            <td class="w-70">{{this.ratingsCount}}</td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <tr>
+            <td colspan="3" class="text-center text-danger">
+                No movies to display.
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table>

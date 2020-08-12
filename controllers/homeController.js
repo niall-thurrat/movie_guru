@@ -19,10 +19,12 @@ const homeController = {}
  */
 homeController.get = (req, res, next) => {
   try {
-    res.status(200)
-    const resBody = 'GET home page'
+    const locals = {
+      isAuthenticated: false
+    }
 
-    res.send(resBody)
+    res.status(200)
+    res.render('home', { locals })
   } catch (error) {
     next(error)
   }
