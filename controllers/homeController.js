@@ -7,6 +7,8 @@
 
 'use strict'
 
+const db = require('../config/db')
+
 const homeController = {}
 
 /**
@@ -19,12 +21,24 @@ const homeController = {}
  */
 homeController.get = (req, res, next) => {
   try {
-    const locals = {
-      isAuthenticated: false
-    }
+    const query1 =
+        'SELECT title, avg_rating ' +
+        'FROM movies ' +
+        'GROUP BY ID ' +
+        'ORDER BY avg_rating DESC ' +
+        'LIMIT 10'
 
-    res.status(200)
-    res.render('home', { locals })
+    db.query(query1, function (error, results, fields) {
+      if (error) throw error
+
+      const locals = {
+        movies: results,
+        isAuthenticated: false
+      }
+
+      res.status(200)
+      res.render('home', { locals })
+    })
   } catch (error) {
     next(error)
   }
