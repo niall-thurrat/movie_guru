@@ -8,10 +8,10 @@
 'use strict'
 
 const router = require('express').Router()
-const ctr = require('../controllers/myPageController')
+const ctrl = require('../controllers/myPageController')
 
 // GET /my-page
-router.get('/', ctr.mypage)
+router.get('/', ctrl.get)
 
 // Exports
 module.exports = router

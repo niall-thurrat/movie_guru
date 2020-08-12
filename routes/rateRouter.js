@@ -1,5 +1,5 @@
 /**
- * Rates router
+ * Rate router
  *
  * @author Niall Thurrat
  * @version 1.0.0
@@ -8,10 +8,10 @@
 'use strict'
 
 const router = require('express').Router()
-const ctr = require('../controllers/ratesController')
+const ctrl = require('../controllers/ratesController')
 
 // GET /rate-movies
-router.get('/', ctr.rates)
+router.get('/', ctrl.get)
 
 // Exports
 module.exports = router

@@ -8,17 +8,17 @@
 'use strict'
 
 const router = require('express').Router()
-const ctr = require('../controllers/usersController')
+const ctrl = require('../controllers/usersController')
 
-// GET, POST /register
+// GET, POST /users/register
 router.route('/register')
-  .get(ctr.register)
-  .post(ctr.registerPost)
+  .get(ctrl.getRegister)
+//  .post(ctrl.postRegister)
 
-// GET, POST /login
+// GET, POST /users/login
 router.route('/login')
-  .get(ctr.login)
-  .post(ctr.loginPost)
+  .get(ctrl.getLogin)
+//  .post(ctrl.postLogin)
 
 // Exports
 module.exports = router

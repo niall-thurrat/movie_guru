@@ -8,10 +8,10 @@
 'use strict'
 
 const router = require('express').Router()
-const controller = require('../controllers/homeController')
+const ctrl = require('../controllers/homeController')
 
 // GET /
-router.get('/', controller.index)
+router.get('/', ctrl.get)
 
 // Exports
 module.exports = router

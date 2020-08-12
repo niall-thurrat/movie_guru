@@ -4,6 +4,7 @@
   "description": "a movie rating app built for 2DV513 Database Theory final project",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/niall-thurrat/movie_guru/issues"
   },
-  "homepage": "https://github.com/niall-thurrat/movie_guru#readme"
+  "homepage": "https://github.com/niall-thurrat/movie_guru#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-hbs": "^2.3.4",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  }
 }
