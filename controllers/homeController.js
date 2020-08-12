@@ -22,7 +22,7 @@ const homeController = {}
 homeController.get = (req, res, next) => {
   try {
     const query1 =
-        'SELECT title, avg_rating ' +
+        'SELECT title, avg_rating, ratings_count ' +
         'FROM movies ' +
         'GROUP BY ID ' +
         'ORDER BY avg_rating DESC ' +
