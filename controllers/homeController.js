@@ -19,9 +19,10 @@ const homeController = {}
  * @param {Function} next - next middleware func
  *
  */
-homeController.get = async (req, res, next) => {
+homeController.get = (req, res, next) => {
   try {
     const locals = { isAuthenticated: false }
+    // let queries = []
 
     // Gets 10 movies with the highest average rating
     const query1 =
@@ -64,28 +65,43 @@ homeController.get = async (req, res, next) => {
       'ORDER BY act_avg_rating DESC ' +
       'LIMIT 10'
 
-    await db.query(query1, function (error, results, fields) {
-      if (error) throw error
-      locals.data1 = results
+    // queries.push(query1, query2, query3, query4)
+
+    const promise1 = new Promise((resolve, reject) => {
+      db.query(query1, function (error, results, fields) {
+        if (error) reject(error)
+        resolve(results)
+      })
     })
 
-    await db.query(query2, function (error, results, fields) {
-      if (error) throw error
-      locals.data2 = results
+    const promise2 = new Promise((resolve, reject) => {
+      db.query(query2, function (error, results, fields) {
+        if (error) reject(error)
+        resolve(results)
+      })
     })
 
-    await db.query(query3, function (error, results, fields) {
-      if (error) throw error
-      locals.data3 = results
+    const promise3 = new Promise((resolve, reject) => {
+      db.query(query3, function (error, results, fields) {
+        if (error) reject(error)
+        resolve(results)
+      })
     })
 
-    await db.query(query4, function (error, results, fields) {
-      if (error) throw error
-      locals.data4 = results
+    const promise4 = new Promise((resolve, reject) => {
+      db.query(query4, function (error, results, fields) {
+        if (error) reject(error)
+        resolve(results)
+      })
     })
 
-    res.status(200)
-    res.render('home', { locals })
+    Promise.all([promise1, promise2, promise3, promise4])
+      .then(result => {
+        locals.data = result
+
+        res.render('home', { locals })
+      })
+      .catch(error => console.log(`Error in promises ${error}`))
   } catch (error) {
     next(error)
   }

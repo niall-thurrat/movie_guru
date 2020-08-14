@@ -12,8 +12,8 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.data1.length }}
-        {{#each locals.data1}}
+        {{#if locals.data.[0].length }}
+        {{#each locals.data.[0]}}
         <tr>
             <td class="w-10">{{this.title}}</td>
             <td class="w-20">{{this.avg_rating}}</td>
@@ -45,8 +45,8 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.data2.length }}
-        {{#each locals.data2}}
+        {{#if locals.data.[1].length }}
+        {{#each locals.data.[1]}}
         <tr>
             <td class="w-10">{{this.title}}</td>
             <td class="w-20">{{this.avg_rating}}</td>
@@ -78,8 +78,8 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.data3.length }}
-        {{#each locals.data3}}
+        {{#if locals.data.[2].length }}
+        {{#each locals.data.[2]}}
         <tr>
             <td class="w-10">{{this.director_name}}</td>
             <td class="w-20">{{this.dir_avg_rating}}</td>
@@ -111,8 +111,8 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.data4.length }}
-        {{#each locals.data4}}
+        {{#if locals.data.[3].length }}
+        {{#each locals.data.[3]}}
         <tr>
             <td class="w-10">{{this.actor_name}}</td>
             <td class="w-20">{{this.act_avg_rating}}</td>
