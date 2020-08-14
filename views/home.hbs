@@ -95,3 +95,36 @@
         {{/if}}
     </tbody>
 </table>
+
+<h1><span class="far fa-list-alt"></span> 
+    Top 10 actors</h1>
+
+<h6>Gets the top 10 actors whose movies 
+    have the best average rating</h6>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Actor</th>
+            <th>Average Movie Rating</th>
+            <th class="text-left">Ratings Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if locals.data4.length }}
+        {{#each locals.data4}}
+        <tr>
+            <td class="w-10">{{this.actor_name}}</td>
+            <td class="w-20">{{this.act_avg_rating}}</td>
+            <td class="w-70">{{this.ratings_count}}</td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <tr>
+            <td colspan="3" class="text-center text-danger">
+                No actors to display.
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table>
