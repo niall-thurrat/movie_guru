@@ -11,6 +11,7 @@ const express = require('express')
 const hbs = require('express-hbs')
 const path = require('path')
 const logger = require('morgan')
+const createError = require('http-errors')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -33,6 +34,21 @@ app.use('/', require('./routes/homeRouter'))
 app.use('/my-page', require('./routes/myPageRouter'))
 app.use('/rate-movies', require('./routes/rateRouter'))
 app.use('/users', require('./routes/usersRouter'))
+
+// catch 404 errors
+app.use('*', (req, res, next) => next(createError(404)))
+
+// custom error handler
+app.use((err, req, res, next) => {
+  // for dev purposes
+  console.log(`ERROR:
+    status: ${err.status}
+    msg: ${err.message}
+    stack: ${err.stack}`)
+
+  res.status(err.status || 500)
+    .sendFile(path.join(__dirname, 'public', `${err.status}.html`))
+})
 
 // run server
 app.listen(port, () => console.log(`Server running on port ${port}`))

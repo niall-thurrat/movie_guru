@@ -8,6 +8,7 @@
 'use strict'
 
 const db = require('../config/db')
+const createError = require('http-errors')
 
 const homeController = {}
 
@@ -64,7 +65,7 @@ homeController.get = (req, res, next) => {
       'JOIN actors ON stars_in.actorID = actors.ID ' +
       'GROUP BY actorID ' +
       'ORDER BY act_avg_rating DESC ' +
-      'LIMIT 10'
+      'LIMIT 10xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 
     queryStrings.push(qs1, qs2, qs3, qs4)
 
@@ -83,8 +84,10 @@ homeController.get = (req, res, next) => {
         locals.data = result
         res.render('home', { locals })
       })
-      .catch(error =>
-        console.log(`Error in promises ${error}`))
+      .catch(error => {
+        console.log('THIS RUNS')
+        return next(createError(500, `Error in promises ${error}`))
+      })
   } catch (error) {
     next(error)
   }
