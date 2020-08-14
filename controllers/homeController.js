@@ -22,10 +22,11 @@ const homeController = {}
 homeController.get = (req, res, next) => {
   try {
     const locals = { isAuthenticated: false }
-    // let queries = []
+    const queryStrings = []
+    const promises = []
 
     // Gets 10 movies with the highest average rating
-    const query1 =
+    const qs1 =
       'SELECT title, ROUND( avg_rating,1 ) AS avg_rating, ratings_count ' +
       'FROM movies ' +
       'GROUP BY ID ' +
@@ -34,7 +35,7 @@ homeController.get = (req, res, next) => {
 
     // Gets 10 movies with the highest average rating in
     // the last week (last 7 days and today)
-    const query2 =
+    const qs2 =
       'SELECT title, ROUND( avg_rating,1 ) AS avg_rating, COUNT(rating) AS ratings_count ' +
       'FROM rates ' +
       'JOIN movies ON rates.movieID = movies.ID ' +
@@ -45,7 +46,7 @@ homeController.get = (req, res, next) => {
 
     // Gets the top 10 directors whose movies have
     // the best average rating
-    const query3 =
+    const qs3 =
       'SELECT director_name, ROUND( AVG(avg_rating),1 ) AS dir_avg_rating, SUM(ratings_count) AS ratings_count ' +
       'FROM directs ' +
       'JOIN movies ON directs.movieID = movies.ID ' +
@@ -56,7 +57,7 @@ homeController.get = (req, res, next) => {
 
     // Gets the top 10 actors whose movies have the
     // best average rating
-    const query4 =
+    const qs4 =
       'SELECT actor_name, ROUND( AVG(avg_rating),1 ) AS act_avg_rating, SUM(ratings_count) AS ratings_count ' +
       'FROM stars_in ' +
       'JOIN movies ON stars_in.movieID = movies.ID ' +
@@ -65,43 +66,25 @@ homeController.get = (req, res, next) => {
       'ORDER BY act_avg_rating DESC ' +
       'LIMIT 10'
 
-    // queries.push(query1, query2, query3, query4)
+    queryStrings.push(qs1, qs2, qs3, qs4)
 
-    const promise1 = new Promise((resolve, reject) => {
-      db.query(query1, function (error, results, fields) {
-        if (error) reject(error)
-        resolve(results)
+    queryStrings.forEach(qs => {
+      const promise = new Promise((resolve, reject) => {
+        db.query(qs, function (error, results, fields) {
+          if (error) reject(error)
+          resolve(results)
+        })
       })
+      promises.push(promise)
     })
 
-    const promise2 = new Promise((resolve, reject) => {
-      db.query(query2, function (error, results, fields) {
-        if (error) reject(error)
-        resolve(results)
-      })
-    })
-
-    const promise3 = new Promise((resolve, reject) => {
-      db.query(query3, function (error, results, fields) {
-        if (error) reject(error)
-        resolve(results)
-      })
-    })
-
-    const promise4 = new Promise((resolve, reject) => {
-      db.query(query4, function (error, results, fields) {
-        if (error) reject(error)
-        resolve(results)
-      })
-    })
-
-    Promise.all([promise1, promise2, promise3, promise4])
+    Promise.all(promises)
       .then(result => {
         locals.data = result
-
         res.render('home', { locals })
       })
-      .catch(error => console.log(`Error in promises ${error}`))
+      .catch(error =>
+        console.log(`Error in promises ${error}`))
   } catch (error) {
     next(error)
   }
