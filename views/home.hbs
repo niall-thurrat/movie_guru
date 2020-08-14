@@ -1,6 +1,7 @@
-<h1>
-    <span class="far fa-list-alt"></span> Top 10 movies by average rating
-</h1>
+<h1><span class="far fa-list-alt"></span>
+    Top 10 rated movies</h1>
+
+<h6>Get 10 movies with the highest average rating</h6>
 
 <table class="table table-striped">
     <thead>
@@ -11,8 +12,41 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.movies.length }}
-        {{#each locals.movies}}
+        {{#if locals.data1.length }}
+        {{#each locals.data1}}
+        <tr>
+            <td class="w-10">{{this.title}}</td>
+            <td class="w-20">{{this.avg_rating}}</td>
+            <td class="w-70">{{this.ratings_count}}</td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <tr>
+            <td colspan="3" class="text-center text-danger">
+                No movies to display.
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table>
+
+<h1><span class="far fa-list-alt"></span> 
+    Top 10 rated movies in the last week</h1>
+
+<h6>Get 10 movies with the highest average rating in the 
+    last week (last 7 days and today)</h6>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Average Rating</th>
+            <th class="text-left">Ratings Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if locals.data2.length }}
+        {{#each locals.data2}}
         <tr>
             <td class="w-10">{{this.title}}</td>
             <td class="w-20">{{this.avg_rating}}</td>
