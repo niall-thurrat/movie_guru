@@ -19,10 +19,9 @@ const myPageController = {}
  */
 myPageController.get = (req, res, next) => {
   try {
-    res.status(200)
-    const resBody = 'GET my page'
+    const locals = {}
 
-    res.send(resBody)
+    res.render('home', { locals })
   } catch (error) {
     next(error)
   }

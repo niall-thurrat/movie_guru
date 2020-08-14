@@ -20,5 +20,10 @@ router.route('/login')
   .get(ctrl.getLogin)
 //  .post(ctrl.postLogin)
 
+// GET, POST /users/logout
+router.route('/logout')
+  .get(ctrl.getLogout)
+//  .post(ctrl.postLogout)
+
 // Exports
 module.exports = router

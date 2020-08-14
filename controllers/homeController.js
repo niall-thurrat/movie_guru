@@ -65,7 +65,7 @@ homeController.get = (req, res, next) => {
       'JOIN actors ON stars_in.actorID = actors.ID ' +
       'GROUP BY actorID ' +
       'ORDER BY act_avg_rating DESC ' +
-      'LIMIT 10xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+      'LIMIT 10'
 
     queryStrings.push(qs1, qs2, qs3, qs4)
 

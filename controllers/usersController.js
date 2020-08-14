@@ -19,10 +19,7 @@ const usersController = {}
  */
 usersController.getRegister = (req, res, next) => {
   try {
-    res.status(200)
-    const resBody = 'GET register page'
-
-    res.send(resBody)
+    res.render('users/register')
   } catch (error) {
     next(error)
   }
@@ -38,10 +35,23 @@ usersController.getRegister = (req, res, next) => {
  */
 usersController.getLogin = (req, res, next) => {
   try {
-    res.status(200)
-    const resBody = 'GET login page'
+    res.render('users/login')
+  } catch (error) {
+    next(error)
+  }
+}
 
-    res.send(resBody)
+/**
+ * Handling GET requests to /users/login
+ *
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ * @param {Function} next - next middleware func
+ *
+ */
+usersController.getLogout = (req, res, next) => {
+  try {
+    res.render('users/logout')
   } catch (error) {
     next(error)
   }
