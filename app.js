@@ -10,10 +10,12 @@
 const express = require('express')
 const hbs = require('express-hbs')
 const path = require('path')
-const logger = require('morgan')
 const createError = require('http-errors')
+const session = require('express-session')
+const logger = require('morgan')
 
 const app = express()
+require('dotenv').config()
 const port = process.env.PORT || 3000
 
 // view engine config
@@ -28,6 +30,26 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(logger('dev'))
 app.use(express.urlencoded({ extended: false }))
+
+// session middleware
+const sessionOptions = {
+  name: 'movie_guru_cookie',
+  secret: process.env.SESH_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: 'lax'
+  }
+}
+app.use(session(sessionOptions))
+
+// flash messages middleware
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash
+  delete req.session.flash
+  next()
+})
 
 // routes
 app.use('/', require('./routes/homeRouter'))

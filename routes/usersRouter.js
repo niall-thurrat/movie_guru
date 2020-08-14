@@ -13,7 +13,7 @@ const ctrl = require('../controllers/usersController')
 // GET, POST /users/register
 router.route('/register')
   .get(ctrl.getRegister)
-//  .post(ctrl.postRegister)
+  .post(ctrl.postRegister)
 
 // GET, POST /users/login
 router.route('/login')
