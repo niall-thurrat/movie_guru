@@ -69,7 +69,7 @@ app.use((err, req, res, next) => {
     stack: ${err.stack}`)
 
   res.status(err.status || 500)
-    .sendFile(path.join(__dirname, 'public', `${err.status}.html`))
+    .sendFile(path.join(__dirname, 'public', `${err.status || 500}.html`))
 })
 
 // run server

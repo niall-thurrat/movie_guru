@@ -18,7 +18,7 @@ router.route('/register')
 // GET, POST /users/login
 router.route('/login')
   .get(ctrl.getLogin)
-//  .post(ctrl.postLogin)
+  .post(ctrl.postLogin)
 
 // GET, POST /users/logout
 router.route('/logout')

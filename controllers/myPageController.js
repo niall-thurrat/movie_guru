@@ -21,7 +21,7 @@ myPageController.get = (req, res, next) => {
   try {
     const locals = {}
 
-    res.render('home', { locals })
+    res.render('myPage', { locals })
   } catch (error) {
     next(error)
   }
