@@ -23,7 +23,7 @@ router.route('/login')
 // GET, POST /users/logout
 router.route('/logout')
   .get(ctrl.getLogout)
-//  .post(ctrl.postLogout)
+  .post(ctrl.postLogout)
 
 // Exports
 module.exports = router

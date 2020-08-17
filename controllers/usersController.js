@@ -20,7 +20,10 @@ const usersController = {}
  *
  */
 usersController.getRegister = (req, res) => {
-  res.render('users/register')
+  const locals = {
+    isAuthenticated: req.session.isAuthenticated
+  }
+  res.render('users/register', { locals })
 }
 
 /**
@@ -67,7 +70,10 @@ usersController.postRegister = (req, res) => {
  *
  */
 usersController.getLogin = (req, res) => {
-  res.render('users/login')
+  const locals = {
+    isAuthenticated: req.session.isAuthenticated
+  }
+  res.render('users/login', { locals })
 }
 
 /**
@@ -99,9 +105,9 @@ usersController.postLogin = (req, res) => {
       req.session.flash = {
         type: 'success',
         text: 'You have successfully logged in.'
-      } &&
+      }
 
-      console.log(`TEST: ${results[0].ID}`)
+      req.session.isAuthenticated = true
       req.session.user = results[0]
 
       res.redirect('/my-page')
@@ -116,8 +122,33 @@ usersController.postLogin = (req, res) => {
  * @param {Object} res - response object
  *
  */
-usersController.getLogout = (req, res, next) => {
-  res.render('users/logout')
+usersController.getLogout = (req, res) => {
+  const locals = {
+    isAuthenticated: req.session.isAuthenticated
+  }
+  res.render('users/logout', { locals })
+}
+
+/**
+ * Handling POST requests to /users/logout
+ *
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ *
+ */
+usersController.postLogout = (req, res) => {
+  if (req.body.submitted) {
+    req.session.destroy()
+
+    res.redirect('/')
+  } else {
+    req.session.flash = {
+      type: 'danger',
+      text: 'Logout cancelled.'
+    }
+
+    res.redirect('/')
+  }
 }
 
 // Exports

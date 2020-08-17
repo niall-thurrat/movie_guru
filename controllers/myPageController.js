@@ -14,25 +14,21 @@ const myPageController = {}
  *
  * @param {Object} req - request object
  * @param {Object} res - response object
- * @param {Function} next - next middleware func
  *
  */
-myPageController.get = (req, res, next) => {
-  try {
-    const user = req.session.user
-    const date = new Date(user.birth_date)
-    const formattedDate = date.getFullYear() + '-' +
+myPageController.get = (req, res) => {
+  const locals = {
+    isAuthenticated: req.session.isAuthenticated
+  }
+  const user = req.session.user
+  const date = new Date(user.birth_date)
+  const formattedDate = date.getFullYear() + '-' +
       (date.getMonth() + 1) + '-' + date.getDate()
 
-    const locals = {
-      username: user.username,
-      dob: formattedDate
-    }
+  locals.username = user.username
+  locals.dob = formattedDate
 
-    res.render('myPage', { locals })
-  } catch (error) {
-    next(error)
-  }
+  res.render('myPage', { locals })
 }
 
 // Exports

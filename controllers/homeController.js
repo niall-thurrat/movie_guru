@@ -22,7 +22,7 @@ const homeController = {}
  */
 homeController.get = (req, res, next) => {
   try {
-    const locals = { isAuthenticated: false }
+    const locals = { isAuthenticated: req.session.isAuthenticated }
     const queryStrings = []
     const promises = []
 
