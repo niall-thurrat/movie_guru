@@ -69,6 +69,7 @@ homeController.get = (req, res, next) => {
 
     queryStrings.push(qs1, qs2, qs3, qs4)
 
+    // pushes query promises to an array
     queryStrings.forEach(qs => {
       const promise = new Promise((resolve, reject) => {
         db.query(qs, function (error, results, fields) {
@@ -79,13 +80,13 @@ homeController.get = (req, res, next) => {
       promises.push(promise)
     })
 
+    // processes query promises asyncronously
     Promise.all(promises)
       .then(result => {
         locals.data = result
         res.render('home', { locals })
       })
       .catch(error => {
-        console.log('THIS RUNS')
         return next(createError(500, `Error in promises ${error}`))
       })
   } catch (error) {
