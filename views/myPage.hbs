@@ -1,130 +1,14 @@
 <h1><span class="far fa-list-alt"></span>
-    Top 10 movies</h1>
+    My page</h1>
 
-<h6>Gets 10 movies with the highest average rating</h6>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Average Rating</th>
-            <th class="text-left">Ratings Count</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#if locals.data.[0].length }}
-        {{#each locals.data.[0]}}
-        <tr>
-            <td class="w-10">{{this.title}}</td>
-            <td class="w-20">{{this.avg_rating}}</td>
-            <td class="w-70">{{this.ratings_count}}</td>
-        </tr>
-        {{/each}}
-        {{else}}
-        <tr>
-            <td colspan="3" class="text-center text-danger">
-                No movies to display.
-            </td>
-        </tr>
-        {{/if}}
-    </tbody>
-</table>
-
-<h1><span class="far fa-list-alt"></span> 
-    Top 10 movies last week</h1>
-
-<h6>Gets 10 movies with the highest average rating in the 
-    last week (last 7 days and today)</h6>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Average Rating</th>
-            <th class="text-left">Ratings Count</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#if locals.data.[1].length }}
-        {{#each locals.data.[1]}}
-        <tr>
-            <td class="w-10">{{this.title}}</td>
-            <td class="w-20">{{this.avg_rating}}</td>
-            <td class="w-70">{{this.ratings_count}}</td>
-        </tr>
-        {{/each}}
-        {{else}}
-        <tr>
-            <td colspan="3" class="text-center text-danger">
-                No movies to display.
-            </td>
-        </tr>
-        {{/if}}
-    </tbody>
-</table>
-
-<h1><span class="far fa-list-alt"></span> 
-    Top 10 directors</h1>
-
-<h6>Gets the top 10 directors whose movies 
-    have the best average rating</h6>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Director</th>
-            <th>Average Movie Rating</th>
-            <th class="text-left">Ratings Count</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#if locals.data.[2].length }}
-        {{#each locals.data.[2]}}
-        <tr>
-            <td class="w-10">{{this.director_name}}</td>
-            <td class="w-20">{{this.dir_avg_rating}}</td>
-            <td class="w-70">{{this.ratings_count}}</td>
-        </tr>
-        {{/each}}
-        {{else}}
-        <tr>
-            <td colspan="3" class="text-center text-danger">
-                No directors to display.
-            </td>
-        </tr>
-        {{/if}}
-    </tbody>
-</table>
-
-<h1><span class="far fa-list-alt"></span> 
-    Top 10 actors</h1>
-
-<h6>Gets the top 10 actors whose movies 
-    have the best average rating</h6>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Actor</th>
-            <th>Average Movie Rating</th>
-            <th class="text-left">Ratings Count</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#if locals.data.[3].length }}
-        {{#each locals.data.[3]}}
-        <tr>
-            <td class="w-10">{{this.actor_name}}</td>
-            <td class="w-20">{{this.act_avg_rating}}</td>
-            <td class="w-70">{{this.ratings_count}}</td>
-        </tr>
-        {{/each}}
-        {{else}}
-        <tr>
-            <td colspan="3" class="text-center text-danger">
-                No actors to display.
-            </td>
-        </tr>
-        {{/if}}
-    </tbody>
-</table>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Profile</h4>
+    <p class="card-text">
+      Username:  {{locals.username}}
+    </p>
+    <p class="card-text">
+      Date of birth: {{locals.dob}}
+    </p>
+  </div>
+</div>

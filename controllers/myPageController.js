@@ -19,7 +19,15 @@ const myPageController = {}
  */
 myPageController.get = (req, res, next) => {
   try {
-    const locals = {}
+    const user = req.session.user
+    const date = new Date(user.birth_date)
+    const formattedDate = date.getFullYear() + '-' +
+      (date.getMonth() + 1) + '-' + date.getDate()
+
+    const locals = {
+      username: user.username,
+      dob: formattedDate
+    }
 
     res.render('myPage', { locals })
   } catch (error) {
