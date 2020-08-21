@@ -102,3 +102,8 @@ html {
   .card-text {
     font-family: 'Consolas', 'Courier New', Courier, monospace
   }
+
+  .inline-form {
+    display: inline-block;
+    margin: 3px;
+  }

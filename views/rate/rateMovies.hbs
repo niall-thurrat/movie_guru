@@ -11,7 +11,22 @@
   </div>
 </form><br>
 
-{{#if locals.data }}
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">A-Z Movie Search</h4>
+    <p class="card-text">
+      Gets movies by first letter <br>
+       {{#each locals.alphabet}}
+        <form action="/rate-movies" class="inline-form">
+          <input type="submit" value="{{this}}" />
+          <input type="hidden" name="a-z" value="{{this}}">
+        </form>
+      {{/each}}
+    </p>
+  </div>
+</div><br>
+
+{{#if locals.keywords}}
 <h1><span class="far fa-list-alt"></span>
     Search Results</h1>
 
@@ -20,26 +35,74 @@
     {{this}} 
   {{/each}}</h6>
 
+<h6>Result count: 
+  {{#if locals.data.length}} {{locals.data.length}}
+  {{else}} 0 
+  {{/if}}</h6>
+
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Title</th>
             <th>Year</th>
-            <th class="text-left">Average Rating</th>
+            <th>Average Rating</th>
+            <th>My Rating</th>
         </tr>
     </thead>
     <tbody>
         {{#if locals.data.length }}
         {{#each locals.data}}
         <tr>
-            <td class="w-10"><a href="/rate-movies/{{this.ID}}">{{this.title}}</a></td>
-            <td class="w-20">{{this.year}}</td>
-            <td class="w-70">{{this.avg_rating}}</td>
+            <td><a href="/rate-movies/{{this.ID}}">{{this.title}}</a></td>
+            <td>{{this.year}}</td>
+            <td>{{this.avg_rating}}</td>
+            <td>{{this.my_rating}}</td>
         </tr>
         {{/each}}
         {{else}}
         <tr>
             <td colspan="3" class="text-center text-danger">
+                No movies to display.
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table><br>
+{{else if locals.index}}
+  <h1><span class="far fa-list-alt"></span>
+    Movies beginning with {{locals.index}}</h1>
+
+<h6>Result count: 
+  {{#if locals.data.length}} {{locals.data.length}}
+  {{else}} 0 
+  {{/if}}</h6>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Length</th>
+            <th>Certificate</th>
+            <th>Average rating</th>
+            <th>My rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if locals.data.length }}
+        {{#each locals.data}}
+        <tr>
+            <td><a href="/rate-movies/{{this.ID}}">{{this.title}}</a></td>
+            <td>{{this.year}}</td>
+            <td>{{this.length}}</td>
+            <td>{{this.certificate}}</td>
+            <td>{{this.average_rating}}</td>
+            <td>{{this.my_rating}}</td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <tr>
+            <td colspan="6" class="text-center text-danger">
                 No movies to display.
             </td>
         </tr>
