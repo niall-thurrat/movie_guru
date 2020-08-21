@@ -32,7 +32,7 @@
         {{#if locals.data.length }}
         {{#each locals.data}}
         <tr>
-            <td class="w-10">{{this.title}}</td>
+            <td class="w-10"><a href="/rate-movies/{{this.ID}}">{{this.title}}</a></td>
             <td class="w-20">{{this.year}}</td>
             <td class="w-70">{{this.avg_rating}}</td>
         </tr>

@@ -36,7 +36,7 @@ rateController.get = (req, res, next) => {
 
       // query to get movies using keyword
       let qs =
-      'SELECT title, year, avg_rating ' +
+      'SELECT ID, title, year, avg_rating ' +
       'FROM movies ' +
       `WHERE title LIKE '%${keywords[0]}%' `
 
@@ -56,14 +56,33 @@ rateController.get = (req, res, next) => {
       db.query(qs, function (err, results, fields) {
         if (err) return next(createError(500, 'Error in query to db'))
 
-        locals.data = results // THERE MIGHT NOT BEE ANY RESULTS
+        locals.data = results
       })
     }
 
-    res.render('rateMovies', { locals })
+    res.render('rate/rateMovies', { locals })
   } catch (error) {
     next(error)
   }
+}
+
+/**
+ * Handling GET requests to /rate-movies/:movieID
+ *
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ * @param {Function} next - next middleware func
+ *
+ */
+rateController.getMovie = (req, res, next) => {
+  const locals = {
+    isAuthenticated: req.session.isAuthenticated
+  }
+
+  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl
+  locals.test = fullUrl
+
+  res.render('rate/movie', { locals })
 }
 
 // Exports
