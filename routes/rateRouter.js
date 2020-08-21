@@ -8,7 +8,7 @@
 'use strict'
 
 const router = require('express').Router()
-const ctrl = require('../controllers/ratesController')
+const ctrl = require('../controllers/rateController')
 
 // GET /rate-movies
 router.get('/', ctrl.get)
