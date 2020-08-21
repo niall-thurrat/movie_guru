@@ -22,7 +22,7 @@ const rateController = {}
  * @param {Function} next - next middleware func
  *
  */
-rateController.get = (req, res, next) => {
+rateController.getMovies = (req, res, next) => {
   try {
     const user = req.session.user
     const locals = {
@@ -107,14 +107,82 @@ rateController.get = (req, res, next) => {
  *
  */
 rateController.getMovie = (req, res, next) => {
-  const locals = {
-    isAuthenticated: req.session.isAuthenticated
+  try {
+    const locals = {
+      isAuthenticated: req.session.isAuthenticated
+    }
+    const user = req.session.user
+    const url = req.originalUrl
+    const movieID = url.substr(url.length - 5)
+
+    // query to get a specific movie by ID (also
+    // joins rating of a specific user)
+    const qs =
+      'SELECT ID, title, year, length, certificate, avg_rating AS average_rating, rating AS my_rating ' +
+      'FROM movies ' +
+      'LEFT JOIN ( ' +
+        'SELECT viewerID, movieID, rating ' +
+        'FROM rates ' +
+        `WHERE viewerID = ${user.ID}) AS my_rating ` +
+      'ON movies.ID = my_rating.movieID ' +
+      `WHERE ID = '${movieID}'`
+
+    db.query(qs, function (err, results, fields) {
+      if (err) {
+        return next(createError(500, 'Error in query to db'))
+      }
+      locals.data = results
+    })
+
+    res.render('rate/movie', { locals })
+  } catch (error) {
+    next(error)
   }
+}
 
-  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl
-  locals.test = fullUrl
+/**
+ * Handling POST requests to /rate-movies/:movieID
+ *
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ * @param {Function} next - next middleware func
+ *
+ */
+rateController.rateMovie = (req, res, next) => {
+  try {
+    const user = req.session.user
 
-  res.render('rate/movie', { locals })
+    const url = req.originalUrl
+    const movieID = url.substr(url.length - 5)
+
+    let today = new Date()
+    var yyyy = today.getFullYear()
+    var mm = String(today.getMonth() + 1).padStart(2, '0')
+    var dd = String(today.getDate()).padStart(2, '0')
+    today = yyyy + '-' + mm + '-' + dd
+
+    const values = [
+      user.ID,
+      movieID,
+      parseInt(req.body.rating),
+      today
+    ]
+
+    // query to insert the movie rating of a specific user
+    const qs =
+      'INSERT INTO movie_guru.rates(viewerID, movieID, rating, date) ' +
+      'VALUES (?) ' +
+      `ON DUPLICATE KEY UPDATE rating =${values[2]}`
+
+    db.query(qs, [values], (err, results, fields) => {
+      if (err) {
+        return next(createError(500, 'Error in query to db'))
+      }
+      res.redirect('/rate-movies')
+    })
+  } catch (error) {
+    next(error)
+  }
 }
 
 // Exports

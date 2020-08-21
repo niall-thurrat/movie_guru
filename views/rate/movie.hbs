@@ -1,1 +1,28 @@
-<p>TEST = good luck !!!! {{locals.test}}</p>
+<h1>Movie rating page</h1>
+
+<ul class="list-group">
+  <li class="list-group-item list-group-item-primary">{{locals.data.[0].title}}</li>
+  <li class="list-group-item">Year:  {{locals.data.[0].year}}</li>
+  <li class="list-group-item">Length:  {{locals.data.[0].length}}</li>
+  <li class="list-group-item">Certificate:  {{locals.data.[0].certificate}}</li>
+  <li class="list-group-item">Average rating:  {{locals.data.[0].average_rating}}</li>
+  <li class="list-group-item">My rating:  
+    {{#if locals.data.[0].my_rating}} 
+      {{locals.data.[0].my_rating}}
+    {{else}}
+      Not rated
+    {{/if}}</li>
+</ul><br>
+
+<div class="card">
+  <div class="card-body">
+    <form action="/rate-movies/{{locals.data.[0].ID}}" method="POST">
+      <input type="radio" name="rating" value="1">  1 <br>
+      <input type="radio" name="rating" value="2">  2 <br>
+      <input type="radio" name="rating" value="3">  3 <br>
+      <input type="radio" name="rating" value="4">  4 <br>
+      <input type="radio" name="rating" value="5" checked="checked">  5 <br><br>
+      <button type="submit" class="btn btn-primary">Rate movie!</button>
+    </form>
+  </div>
+</div><br>

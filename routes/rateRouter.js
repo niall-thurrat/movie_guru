@@ -10,11 +10,11 @@
 const router = require('express').Router()
 const ctrl = require('../controllers/rateController')
 
-router.get('/', ctrl.get)
+router.get('/', ctrl.getMovies)
 
 router.route('/:movieId')
   .get(ctrl.getMovie)
-//  .post(ctrl.postMovie)
+  .post(ctrl.rateMovie)
 
 // Exports
 module.exports = router
