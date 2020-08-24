@@ -15,7 +15,7 @@ const createError = require('http-errors')
 const rateController = {}
 
 /**
- * Handling GET requests to /rate-movies
+ * Handles GET requests to /rate-movies
  *
  * @param {Object} req - request object
  * @param {Object} res - response object
@@ -68,7 +68,7 @@ rateController.getMovies = (req, res, next) => {
         locals.data = results
       })
     } else if (req.query['a-z']) {
-      console.log('this fires')
+      // handle a-z search for movies by first letter
       const index = req.query['a-z']
       locals.index = index
 
@@ -99,7 +99,7 @@ rateController.getMovies = (req, res, next) => {
 }
 
 /**
- * Handling GET requests to /rate-movies/:movieID
+ * Handles GET requests to /rate-movies/:movieID
  *
  * @param {Object} req - request object
  * @param {Object} res - response object
@@ -141,7 +141,7 @@ rateController.getMovie = (req, res, next) => {
 }
 
 /**
- * Handling POST requests to /rate-movies/:movieID
+ * Handles POST requests to /rate-movies/:movieID
  *
  * @param {Object} req - request object
  * @param {Object} res - response object
@@ -178,11 +178,40 @@ rateController.rateMovie = (req, res, next) => {
       if (err) {
         return next(createError(500, 'Error in query to db'))
       }
+
+      updateMovie(movieID)
       res.redirect('/rate-movies')
     })
   } catch (error) {
     next(error)
   }
+}
+
+/**
+ * Updates movie avg_rating + ratings_count in db
+ *
+ * @param {number} movieID
+ * @param {Function} next - next middleware func
+ *
+ */
+function updateMovie (movieID, next) {
+  // query updates movie avg_rating + ratings_count (
+  // sub-query calculates avg + count from rates table)
+  const qs =
+      'UPDATE movies m, ' +
+      '(  SELECT movieID, AVG(rating) AS avg, COUNT(rating) AS count ' +
+      '   FROM rates ' +
+      `   WHERE movieID = '${movieID}' ` +
+      ') r ' +
+      'SET m.avg_rating = r.avg, ' +
+      'm.ratings_count = r.count ' +
+      `WHERE ID = '${movieID}'`
+
+  db.query(qs, (err, results, fields) => {
+    if (err) {
+      return next(createError(500, 'Error in query to db'))
+    }
+  })
 }
 
 // Exports
