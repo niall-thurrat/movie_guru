@@ -9,6 +9,7 @@
 
 const db = require('../config/db')
 const createError = require('http-errors')
+const getTable = require('../utils/movieTableSelector')
 
 const myPageController = {}
 
@@ -33,11 +34,13 @@ myPageController.get = (req, res, next) => {
     const date = new Date(user.birth_date)
     const formattedDate = date.getFullYear() + '-' +
       (date.getMonth() + 1) + '-' + date.getDate()
-    locals.username = user.username
     locals.dob = formattedDate
+    locals.username = user.username
 
-    // Gets the total number of ratings a specific
-    // user has made
+    // a string that selects which table/view of movies a user accesses
+    const movies = getTable(date)
+
+    // Gets the total number of ratings a specific user has made
     const qs1 =
     'SELECT COUNT(rating) AS my_ratings_count ' +
     'FROM rates ' +
@@ -48,7 +51,7 @@ myPageController.get = (req, res, next) => {
     const qs2 =
     'SELECT SUM(length) AS watch_time_sum ' +
     'FROM rates ' +
-    'JOIN movies ON rates.movieID = movies.ID ' +
+    `JOIN ${movies} ON rates.movieID = ${movies}.ID ` +
     `WHERE viewerID = ${user.ID}`
 
     // Gets the top 10 directors by average

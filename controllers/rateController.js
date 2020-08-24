@@ -11,6 +11,7 @@ const parseWords = require('../utils/parseWords')
 
 const db = require('../config/db')
 const createError = require('http-errors')
+const getTable = require('../utils/movieTableSelector')
 
 const rateController = {}
 
@@ -24,12 +25,17 @@ const rateController = {}
  */
 rateController.getMovies = (req, res, next) => {
   try {
-    const user = req.session.user
     const locals = {
       isAuthenticated: req.session.isAuthenticated,
       alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
         'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     }
+
+    const user = req.session.user
+    const date = new Date(user.birth_date)
+
+    // a string that selects which table/view of movies a user accesses
+    const movies = getTable(date)
 
     // handle keyword search for movies
     if (req.query.search) {
@@ -40,12 +46,12 @@ rateController.getMovies = (req, res, next) => {
       // joins ratings of a specific user)
       let qs =
       'SELECT ID, title, year, avg_rating AS average_rating, rating AS my_rating ' +
-      'FROM movies ' +
+      `FROM ${movies} ` +
       'LEFT JOIN ( ' +
         'SELECT viewerID, movieID, rating ' +
         'FROM rates ' +
         `WHERE viewerID = ${user.ID}) AS my_rating ` +
-      'ON movies.ID = my_rating.movieID ' +
+      `ON ${movies}.ID = my_rating.movieID ` +
       `WHERE title LIKE '%${keywords[0]}%' `
 
       // add to query if multiple keywords
@@ -76,12 +82,12 @@ rateController.getMovies = (req, res, next) => {
       // joins ratings of a specific user)
       const qs =
       'SELECT ID, title, year, length, certificate, avg_rating AS average_rating, rating AS my_rating ' +
-      'FROM movies ' +
+      `FROM ${movies} ` +
       'LEFT JOIN ( ' +
         'SELECT viewerID, movieID, rating ' +
         'FROM rates ' +
         `WHERE viewerID = ${user.ID}) AS my_rating ` +
-      'ON movies.ID = my_rating.movieID ' +
+      `ON ${movies}.ID = my_rating.movieID ` +
       `WHERE title LIKE '${index}%'`
 
       db.query(qs, function (err, results, fields) {
@@ -112,19 +118,23 @@ rateController.getMovie = (req, res, next) => {
       isAuthenticated: req.session.isAuthenticated
     }
     const user = req.session.user
+    const date = new Date(user.birth_date)
     const url = req.originalUrl
     const movieID = url.substr(url.length - 5)
+
+    // a string that selects which table/view of movies a user accesses
+    const movies = getTable(date)
 
     // query to get a specific movie by ID (also
     // joins rating of a specific user)
     const qs =
       'SELECT ID, title, year, length, certificate, avg_rating AS average_rating, rating AS my_rating ' +
-      'FROM movies ' +
+      `FROM ${movies} ` +
       'LEFT JOIN ( ' +
         'SELECT viewerID, movieID, rating ' +
         'FROM rates ' +
         `WHERE viewerID = ${user.ID}) AS my_rating ` +
-      'ON movies.ID = my_rating.movieID ' +
+      `ON ${movies}.ID = my_rating.movieID ` +
       `WHERE ID = '${movieID}'`
 
     db.query(qs, function (err, results, fields) {
@@ -179,7 +189,7 @@ rateController.rateMovie = (req, res, next) => {
         return next(createError(500, 'Error in query to db'))
       }
 
-      updateMovie(movieID)
+      updateMovie(next, movieID)
       res.redirect('/rate-movies')
     })
   } catch (error) {
@@ -190,15 +200,15 @@ rateController.rateMovie = (req, res, next) => {
 /**
  * Updates movie avg_rating + ratings_count in db
  *
- * @param {number} movieID
  * @param {Function} next - next middleware func
+ * @param {number} movieID
  *
  */
-function updateMovie (movieID, next) {
+function updateMovie (next, movieID) {
   // query updates movie avg_rating + ratings_count (
   // sub-query calculates avg + count from rates table)
   const qs =
-      'UPDATE movies m, ' +
+    'UPDATE movies m, ' +
       '(  SELECT movieID, AVG(rating) AS avg, COUNT(rating) AS count ' +
       '   FROM rates ' +
       `   WHERE movieID = '${movieID}' ` +
