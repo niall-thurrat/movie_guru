@@ -13,9 +13,54 @@
 </div><br>
 
 <h1><span class="far fa-list-alt"></span>
+    My ratings</h1>
+
+<h6>Gets all movies a specific viewer (the logged in user) has rated</h6>
+
+<h6>Result count: 
+  {{#if locals.data.[2].length}} {{locals.data.[2].length}}
+  {{else}} 0 
+  {{/if}}</h6>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Length</th>
+            <th>Certificate</th>
+            <th>Average rating</th>
+            <th>My rating</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if locals.data.[2].length }}
+        {{#each locals.data.[2]}}
+        <tr>
+            <td><a href="/rate-movies/{{this.ID}}">{{this.title}}</a></td>
+            <td>{{this.year}}</td>
+            <td>{{this.length}}</td>
+            <td>{{this.certificate}}</td>
+            <td>{{this.avg_rating}}</td>
+            <td>{{this.my_rating}}</td>
+            <td>{{this.date}}</td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <tr>
+            <td colspan="6" class="text-center text-danger">
+                No movies to display.
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table><br>
+
+<h1><span class="far fa-list-alt"></span>
     My top 10 directors</h1>
 
-<h6>Gets the top 10 directors by average movie rating of a specific viewer</h6>
+<h6>Gets the top 10 directors by average movie rating of a specific viewer (the logged in user)</h6>
 
 <table class="table table-striped">
     <thead>
@@ -26,8 +71,8 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.data.[2].length }}
-        {{#each locals.data.[2]}}
+        {{#if locals.data.[3].length }}
+        {{#each locals.data.[3]}}
         <tr>
             <td class="w-10">{{this.director_name}}</td>
             <td class="w-20">{{this.my_dir_rating}}</td>
@@ -47,7 +92,7 @@
 <h1><span class="far fa-list-alt"></span>
     My top 10 actors</h1>
 
-<h6>Gets the top 10 actors by average movie rating of a specific viewer</h6>
+<h6>Gets the top 10 actors by average movie rating of a specific viewer (the logged in user)</h6>
 
 <table class="table table-striped">
     <thead>
@@ -58,8 +103,8 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.data.[3].length }}
-        {{#each locals.data.[3]}}
+        {{#if locals.data.[4].length }}
+        {{#each locals.data.[4]}}
         <tr>
             <td class="w-10">{{this.actor_name}}</td>
             <td class="w-20">{{this.my_act_rating}}</td>

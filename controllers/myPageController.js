@@ -21,7 +21,7 @@ const myPageController = {}
  * @param {Function} next - next middleware func
  *
  */
-myPageController.get = (req, res, next) => {
+myPageController.get = async (req, res, next) => {
   try {
     const locals = {
       isAuthenticated: req.session.isAuthenticated
@@ -54,9 +54,17 @@ myPageController.get = (req, res, next) => {
     `JOIN ${movies} ON rates.movieID = ${movies}.ID ` +
     `WHERE viewerID = ${user.ID}`
 
+    // Gets all movies a specific user has rated
+    const qs3 =
+    'SELECT ID, title, year, length, certificate, avg_rating, rating AS my_rating, DATE_FORMAT(date,\'%d/%m/%Y\') AS date ' +
+    'FROM rates ' +
+    'JOIN movies ON rates.movieID = movies.ID ' +
+    `WHERE viewerID = ${user.ID} ` +
+    'ORDER BY date DESC'
+
     // Gets the top 10 directors by average
     // movie rating of a specific viewer
-    const qs3 =
+    const qs4 =
     'SELECT director_name, ROUND( AVG(rating),1 ) AS my_dir_rating, COUNT(rating) AS ratings_count ' +
     'FROM rates ' +
     'JOIN directs ON rates.movieID = directs.movieID ' +
@@ -68,7 +76,7 @@ myPageController.get = (req, res, next) => {
 
     // Gets the top 10 actors by average
     // movie rating of a specific viewer
-    const qs4 =
+    const qs5 =
     'SELECT actor_name, ROUND( AVG(rating),1 ) AS my_act_rating, COUNT(rating) AS ratings_count ' +
     'FROM rates ' +
     'JOIN stars_in ON rates.movieID = stars_in.movieID ' +
@@ -78,7 +86,7 @@ myPageController.get = (req, res, next) => {
     'ORDER BY my_act_rating DESC ' +
     'LIMIT 10'
 
-    queryStrings.push(qs1, qs2, qs3, qs4)
+    queryStrings.push(qs1, qs2, qs3, qs4, qs5)
 
     // pushes query promises to an array
     queryStrings.forEach(qs => {
@@ -95,6 +103,9 @@ myPageController.get = (req, res, next) => {
     Promise.all(promises)
       .then(result => {
         locals.data = result
+
+        console.log(result[2][0])
+        console.log(result[2][0]['DATE_FORMAT(date, \'%d/%m/%Y\')'])
 
         res.render('myPage', { locals })
       })
