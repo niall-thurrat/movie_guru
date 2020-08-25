@@ -104,9 +104,6 @@ myPageController.get = async (req, res, next) => {
       .then(result => {
         locals.data = result
 
-        console.log(result[2][0])
-        console.log(result[2][0]['DATE_FORMAT(date, \'%d/%m/%Y\')'])
-
         res.render('myPage', { locals })
       })
       .catch(error => {
