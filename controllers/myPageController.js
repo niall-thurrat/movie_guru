@@ -74,9 +74,37 @@ myPageController.get = async (req, res, next) => {
     'ORDER BY my_dir_rating DESC ' +
     'LIMIT 10'
 
+    // The top 10 average rated movies that a viewer has
+    // not rated that have a director who is in the
+    // viewer’s top 3 directors (by average movie rating)
+    const qs5 =
+    'SELECT movieID, title, year, avg_rating, director_name ' +
+    'FROM directs ' +
+    'JOIN movies ON directs.movieID = movies.ID ' +
+    'JOIN directors ON directs.directorID = directors.ID ' +
+    'WHERE directorID IN ( ' +
+      'SELECT * FROM ( ' +
+        'SELECT directorID ' +
+        'FROM rates sq_rates ' +
+        'JOIN directs ON sq_rates.movieID = directs.movieID ' +
+        `WHERE sq_rates.viewerID = ${user.ID} ` +
+        'GROUP BY directorID ' +
+        'ORDER BY ROUND( AVG(rating),1 ) DESC ' +
+        'LIMIT 3 ' +
+      ') AS sq ' +
+    ') ' +
+      'AND movieID NOT IN ( ' +
+        'SELECT movieID ' +
+        'FROM rates ' +
+        `WHERE viewerID = ${user.ID} ` +
+      ') ' +
+    'GROUP BY movieID ' +
+    'ORDER BY avg_rating DESC ' +
+    'LIMIT 10'
+
     // Gets the top 10 actors by average
     // movie rating of a specific viewer
-    const qs5 =
+    const qs6 =
     'SELECT actor_name, ROUND( AVG(rating),1 ) AS my_act_rating, COUNT(rating) AS ratings_count ' +
     'FROM rates ' +
     'JOIN stars_in ON rates.movieID = stars_in.movieID ' +
@@ -86,7 +114,35 @@ myPageController.get = async (req, res, next) => {
     'ORDER BY my_act_rating DESC ' +
     'LIMIT 10'
 
-    queryStrings.push(qs1, qs2, qs3, qs4, qs5)
+    // The top 10 average rated movies that a viewer has
+    // not rated that have an actor who is in the
+    // viewer’s top 3 actors (by average movie rating)
+    const qs7 =
+    'SELECT movieID, title, year, avg_rating, actor_name ' +
+    'FROM stars_in ' +
+    'JOIN movies ON stars_in.movieID = movies.ID ' +
+    'JOIN actors ON stars_in.actorID = actors.ID ' +
+    'WHERE actorID IN ( ' +
+      'SELECT * FROM ( ' +
+        'SELECT actorID ' +
+        'FROM rates sq_rates ' +
+        'JOIN stars_in ON sq_rates.movieID = stars_in.movieID ' +
+        `WHERE sq_rates.viewerID = ${user.ID} ` +
+        'GROUP BY actorID ' +
+        'ORDER BY ROUND( AVG(rating),1 ) DESC ' +
+        'LIMIT 3 ' +
+      ') AS sq ' +
+    ') ' +
+      'AND movieID NOT IN ( ' +
+        'SELECT movieID ' +
+        'FROM rates ' +
+        `WHERE viewerID = ${user.ID} ` +
+      ') ' +
+    'GROUP BY movieID ' +
+    'ORDER BY avg_rating DESC ' +
+    'LIMIT 10'
+
+    queryStrings.push(qs1, qs2, qs3, qs4, qs5, qs6, qs7)
 
     // pushes query promises to an array
     queryStrings.forEach(qs => {

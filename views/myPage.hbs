@@ -90,6 +90,42 @@
 </table><br>
 
 <h1><span class="far fa-list-alt"></span>
+    10 movie tips based on directors of my favorite movies</h1>
+
+<h6>The top 10 average rated movies that a viewer has not rated 
+    that have a director who is in the viewer’s top 3 directors 
+    (by average movie rating)</h6>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Movie</th>
+            <th>Year</th>
+            <th>Average Rating</th>
+            <th>Director (from my top 3)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if locals.data.[4].length }}
+        {{#each locals.data.[4]}}
+        <tr>
+            <td><a href="/rate-movies/{{this.ID}}">{{this.title}}</a></td>
+            <td>{{this.year}}</td>
+            <td>{{this.avg_rating}}</td>
+            <td>{{this.director_name}}</td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <tr>
+            <td colspan="3" class="text-center text-danger">
+                No movies to display.
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table><br>
+
+<h1><span class="far fa-list-alt"></span>
     My top 10 actors</h1>
 
 <h6>Gets the top 10 actors by average movie rating of a specific viewer (the logged in user)</h6>
@@ -103,8 +139,8 @@
         </tr>
     </thead>
     <tbody>
-        {{#if locals.data.[4].length }}
-        {{#each locals.data.[4]}}
+        {{#if locals.data.[5].length }}
+        {{#each locals.data.[5]}}
         <tr>
             <td class="w-10">{{this.actor_name}}</td>
             <td class="w-20">{{this.my_act_rating}}</td>
@@ -115,6 +151,42 @@
         <tr>
             <td colspan="3" class="text-center text-danger">
                 No actors to display.
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table><br>
+
+<h1><span class="far fa-list-alt"></span>
+    10 movie tips based on actors of my favorite movies</h1>
+
+<h6>The top 10 average rated movies that a viewer has not rated 
+    that have an actor who is in the viewer’s top 3 actors 
+    (by average movie rating)</h6>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Movie</th>
+            <th>Year</th>
+            <th>Average Rating</th>
+            <th>Actor (from my top 3)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if locals.data.[6].length }}
+        {{#each locals.data.[6]}}
+        <tr>
+            <td><a href="/rate-movies/{{this.ID}}">{{this.title}}</a></td>
+            <td>{{this.year}}</td>
+            <td>{{this.avg_rating}}</td>
+            <td>{{this.actor_name}}</td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <tr>
+            <td colspan="3" class="text-center text-danger">
+                No movies to display.
             </td>
         </tr>
         {{/if}}
