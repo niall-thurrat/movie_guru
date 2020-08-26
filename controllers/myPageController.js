@@ -80,7 +80,7 @@ myPageController.get = async (req, res, next) => {
     const qs5 =
     'SELECT movieID, title, year, avg_rating, director_name ' +
     'FROM directs ' +
-    'JOIN movies ON directs.movieID = movies.ID ' +
+    `JOIN ${movies} ON directs.movieID = ${movies}.ID ` +
     'JOIN directors ON directs.directorID = directors.ID ' +
     'WHERE directorID IN ( ' +
       'SELECT * FROM ( ' +
@@ -120,7 +120,7 @@ myPageController.get = async (req, res, next) => {
     const qs7 =
     'SELECT movieID, title, year, avg_rating, actor_name ' +
     'FROM stars_in ' +
-    'JOIN movies ON stars_in.movieID = movies.ID ' +
+    `JOIN ${movies} ON stars_in.movieID = ${movies}.ID ` +
     'JOIN actors ON stars_in.actorID = actors.ID ' +
     'WHERE actorID IN ( ' +
       'SELECT * FROM ( ' +
