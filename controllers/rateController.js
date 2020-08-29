@@ -45,7 +45,7 @@ rateController.getMovies = (req, res, next) => {
       // query to get movies using keywords (also
       // joins ratings of a specific user)
       let qs =
-      'SELECT ID, title, year, avg_rating AS average_rating, rating AS my_rating ' +
+      'SELECT ID, title, year, avg_rating, rating AS my_rating ' +
       `FROM ${movies} ` +
       'LEFT JOIN ( ' +
         'SELECT viewerID, movieID, rating ' +
@@ -81,7 +81,7 @@ rateController.getMovies = (req, res, next) => {
       // query to get movies by first letter (also
       // joins ratings of a specific user)
       const qs =
-      'SELECT ID, title, year, length, certificate, avg_rating AS average_rating, rating AS my_rating ' +
+      'SELECT ID, title, year, length, certificate, avg_rating, rating AS my_rating ' +
       `FROM ${movies} ` +
       'LEFT JOIN ( ' +
         'SELECT viewerID, movieID, rating ' +
@@ -128,7 +128,7 @@ rateController.getMovie = (req, res, next) => {
     // query to get a specific movie by ID (also
     // joins rating of a specific user)
     const qs =
-      'SELECT ID, title, year, length, certificate, avg_rating AS average_rating, rating AS my_rating ' +
+      'SELECT ID, title, year, length, certificate, avg_rating, rating AS my_rating ' +
       `FROM ${movies} ` +
       'LEFT JOIN ( ' +
         'SELECT viewerID, movieID, rating ' +
