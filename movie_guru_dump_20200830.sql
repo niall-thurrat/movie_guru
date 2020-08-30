@@ -148,7 +148,6 @@ CREATE TABLE `movies` (
   `year` int(11) NOT NULL,
   `length` int(11) NOT NULL,
   `certificate` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `min_age` int(11) NOT NULL,
   `avg_rating` decimal(2,1) DEFAULT NULL,
   `ratings_count` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
@@ -161,7 +160,7 @@ CREATE TABLE `movies` (
 
 LOCK TABLES `movies` WRITE;
 /*!40000 ALTER TABLE `movies` DISABLE KEYS */;
-INSERT INTO `movies` VALUES (20000,'The Wolf of Wall Street',2014,180,'18',18,4.0,2),(20001,'Taxi Driver',1976,114,'18',18,NULL,NULL),(20002,'Goodfellas',1990,146,'18',18,5.0,1),(20003,'The Untouchables',1987,119,'15',15,4.0,1),(20004,'The Deer Hunter',1979,183,'18',18,4.0,1),(20005,'Raging Bull',1981,129,'18',18,4.0,1),(20006,'The Avengers',1998,89,'12',0,NULL,NULL),(20007,'Indiana Jones and the Last Crusade',1989,127,'PG',0,3.0,1),(20008,'No Country for Old Men',2008,122,'15',15,3.0,1),(20009,'Scarface',1984,170,'18',18,5.0,1),(20010,'Year of the Dragon',1985,134,'18',18,5.0,1),(20011,'My Cousin Vinny',1992,120,'15',15,5.0,1),(20012,'Revolver',2005,111,'15',15,5.0,1);
+INSERT INTO `movies` VALUES (20000,'The Wolf of Wall Street',2014,180,'18',4.0,2),(20001,'Taxi Driver',1976,114,'18',NULL,NULL),(20002,'Goodfellas',1990,146,'18',5.0,1),(20003,'The Untouchables',1987,119,'15',4.0,1),(20004,'The Deer Hunter',1979,183,'18',4.0,1),(20005,'Raging Bull',1981,129,'18',5.0,1),(20006,'The Avengers',1998,89,'12',NULL,NULL),(20007,'Indiana Jones and the Last Crusade',1989,127,'PG',3.0,1),(20008,'No Country for Old Men',2008,122,'15',3.0,1),(20009,'Scarface',1984,170,'18',5.0,1),(20010,'Year of the Dragon',1985,134,'18',5.0,1),(20011,'My Cousin Vinny',1992,120,'15',5.0,1),(20012,'Revolver',2005,111,'15',5.0,1);
 /*!40000 ALTER TABLE `movies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +186,7 @@ CREATE TABLE `rates` (
 
 LOCK TABLES `rates` WRITE;
 /*!40000 ALTER TABLE `rates` DISABLE KEYS */;
-INSERT INTO `rates` VALUES (10000,20000,4,'2020-08-10'),(10000,20002,5,'2020-08-22'),(10000,20003,4,'2020-08-21'),(10000,20004,4,'2020-07-22'),(10000,20005,4,'2020-07-29'),(10000,20007,3,'2020-07-25'),(10000,20008,3,'2020-08-26'),(10001,20000,4,'2020-07-24'),(10003,20009,5,'2020-08-22'),(10003,20010,5,'2020-07-20'),(10003,20011,5,'2020-07-14'),(10003,20012,5,'2020-06-26');
+INSERT INTO `rates` VALUES (10000,20000,4,'2020-08-10'),(10000,20002,5,'2020-08-22'),(10000,20003,4,'2020-08-21'),(10000,20004,4,'2020-07-22'),(10000,20005,5,'2020-07-29'),(10000,20007,3,'2020-07-25'),(10000,20008,3,'2020-08-26'),(10001,20003,4,'2020-08-28'),(10003,20000,4,'2020-07-24'),(10003,20009,5,'2020-08-22'),(10003,20010,5,'2020-07-20'),(10003,20011,5,'2020-07-14'),(10003,20012,5,'2020-06-26');
 /*!40000 ALTER TABLE `rates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,7 +228,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `year`,
  1 AS `length`,
  1 AS `certificate`,
- 1 AS `min_age`,
  1 AS `avg_rating`,
  1 AS `ratings_count`*/;
 SET character_set_client = @saved_cs_client;
@@ -248,7 +246,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `year`,
  1 AS `length`,
  1 AS `certificate`,
- 1 AS `min_age`,
  1 AS `avg_rating`,
  1 AS `ratings_count`*/;
 SET character_set_client = @saved_cs_client;
@@ -293,7 +290,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `under_15_movies` AS select `movies`.`ID` AS `ID`,`movies`.`title` AS `title`,`movies`.`year` AS `year`,`movies`.`length` AS `length`,`movies`.`certificate` AS `certificate`,`movies`.`min_age` AS `min_age`,`movies`.`avg_rating` AS `avg_rating`,`movies`.`ratings_count` AS `ratings_count` from `movies` where (`movies`.`min_age` < 15) */;
+/*!50001 VIEW `under_15_movies` AS select `movies`.`ID` AS `ID`,`movies`.`title` AS `title`,`movies`.`year` AS `year`,`movies`.`length` AS `length`,`movies`.`certificate` AS `certificate`,`movies`.`avg_rating` AS `avg_rating`,`movies`.`ratings_count` AS `ratings_count` from `movies` where (`movies`.`certificate` not in ('18','15')) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -311,7 +308,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `under_18_movies` AS select `movies`.`ID` AS `ID`,`movies`.`title` AS `title`,`movies`.`year` AS `year`,`movies`.`length` AS `length`,`movies`.`certificate` AS `certificate`,`movies`.`min_age` AS `min_age`,`movies`.`avg_rating` AS `avg_rating`,`movies`.`ratings_count` AS `ratings_count` from `movies` where (`movies`.`min_age` < 18) */;
+/*!50001 VIEW `under_18_movies` AS select `movies`.`ID` AS `ID`,`movies`.`title` AS `title`,`movies`.`year` AS `year`,`movies`.`length` AS `length`,`movies`.`certificate` AS `certificate`,`movies`.`avg_rating` AS `avg_rating`,`movies`.`ratings_count` AS `ratings_count` from `movies` where (`movies`.`certificate` <> 18) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -325,4 +322,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-26 19:08:35
+-- Dump completed on 2020-08-30  2:20:56
